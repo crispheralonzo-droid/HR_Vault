@@ -1,0 +1,54 @@
+<!-- templates/hr_vault/add_employee.html -->
+{% extends 'base.html' %}
+
+{% block title %}Add Employee{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h3>Add New Employee Record</h3>
+                <p class="text-muted">
+                    <small>Sensitive data (bank account and salary) will be encrypted before storage</small>
+                </p>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">
+                            {{ field.label }}
+                            {% if field.name in 'bank_account_number,annual_salary' %}
+                                <span class="encrypted-badge">Encrypted</span>
+                            {% endif %}
+                        </label>
+                        {{ field.errors }}
+                        {{ field }}
+                        {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Save Employee Record</button>
+                        <a href="{% url 'employee_list' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="alert alert-info mt-3">
+            <strong>Security Notice:</strong>
+            <ul>
+                <li>Bank account numbers and salary information are encrypted using AES-256 encryption</li>
+                <li>Data remains encrypted in the database at all times</li>
+                <li>Only authenticated HR staff can access this information</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

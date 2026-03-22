@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HR Vault - Secure Employee Data{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .encrypted-badge {
+            background: linear-gradient(45deg, #dc3545, #fd7e14);
+            color: white;
+            font-size: 0.8em;
+            padding: 0.25em 0.5em;
+            border-radius: 12px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #dc3545 !important;
+        }
+        .security-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'employee_list' %}">
+                <i class="fas fa-shield-alt"></i> HR Vault
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{% url 'add_employee' %}">
+                    <i class="fas fa-plus"></i> Add Employee
+                </a>
+                <a class="nav-link" href="{% url 'employee_list' %}">
+                    <i class="fas fa-list"></i> Records
+                </a>
+                {% if user.is_authenticated %}
+                    <span class="navbar-text me-3">
+                        <i class="fas fa-user"></i> {{ user.username }}
+                    </span>
+                    <a class="nav-link" href="/admin/password_change/">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="container-fluid">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

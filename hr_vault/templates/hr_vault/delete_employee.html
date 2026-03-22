@@ -1,0 +1,29 @@
+<!-- templates/hr_vault/delete_employee.html -->
+{% extends 'base.html' %}
+
+{% block title %}Delete Employee{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3>Confirm Delete</h3>
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to delete the employee record for:</p>
+                <h4>{{ employee.employee_name }} ({{ employee.department }})</h4>
+                <p class="text-danger">This action cannot be undone.</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Yes, Delete Record</button>
+                        <a href="{% url 'employee_list' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
